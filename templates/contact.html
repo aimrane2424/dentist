@@ -1,0 +1,170 @@
+{% extends "base.html" %}
+
+{% block title %} - Contact{% endblock %}
+
+{% block content %}
+<section class="section contact-section">
+    <div class="container">
+        <div class="contact-header">
+            <h1 class="section-title">Contactez-nous</h1>
+            <p class="section-subtitle">Nous sommes à votre écoute pour répondre à toutes vos questions.</p>
+        </div>
+        
+        <div class="contact-container">
+            <div class="contact-info">
+                <div class="contact-details">
+                    <h3>Coordonnées</h3>
+                    
+                    <div class="contact-detail">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <div>
+                            <h4>Adresse</h4>
+                            <p>123 Avenue du Sourire<br>75000 Paris, France</p>
+                        </div>
+                    </div>
+                    
+                    <div class="contact-detail">
+                        <i class="fas fa-phone-alt"></i>
+                        <div>
+                            <h4>Téléphone</h4>
+                            <p>01 23 45 67 89</p>
+                            <small>Pour les urgences, appelez directement</small>
+                        </div>
+                    </div>
+                    
+                    <div class="contact-detail">
+                        <i class="fas fa-envelope"></i>
+                        <div>
+                            <h4>Email</h4>
+                            <p>contact@smiledent.fr</p>
+                            <small>Réponse sous 24h en semaine</small>
+                        </div>
+                    </div>
+                    
+                    <div class="contact-detail">
+                        <i class="fas fa-fax"></i>
+                        <div>
+                            <h4>Fax</h4>
+                            <p>01 23 45 67 90</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="opening-hours">
+                    <h4>Heures d'ouverture</h4>
+                    <ul>
+                        <li>
+                            <span class="day">Lundi - Vendredi</span>
+                            <span class="hours">8h30 - 18h30</span>
+                        </li>
+                        <li>
+                            <span class="day">Samedi</span>
+                            <span class="hours">9h00 - 13h00</span>
+                        </li>
+                        <li>
+                            <span class="day">Dimanche</span>
+                            <span class="hours">Fermé</span>
+                        </li>
+                        <li>
+                            <span class="day">Urgences</span>
+                            <span class="hours">Sur rendez-vous</span>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="contact-cta">
+                    <h4>Prendre rendez-vous</h4>
+                    <p>Utilisez notre formulaire en ligne pour réserver facilement votre consultation.</p>
+                    <a href="{{ url_for('appointment') }}" class="btn btn-primary">
+                        <i class="fas fa-calendar-alt"></i> Prendre RDV en ligne
+                    </a>
+                </div>
+            </div>
+            
+           
+                
+                <div class="map-container">
+                    <!-- Carte Google Maps (simulée) -->
+                    <div class="map-placeholder">
+                        <i class="fas fa-map-marked-alt"></i>
+                        <p>Carte Google Maps</p>
+                        <small>(Intégrez votre carte ici)</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="transport-info">
+            <h3 class="text-center">Accès et transports</h3>
+            <div class="transport-options">
+                <div class="transport-option">
+                    <div class="transport-icon">
+                        <i class="fas fa-subway"></i>
+                    </div>
+                    <h4>Métro</h4>
+                    <p>République (lignes 3, 5, 8, 9, 11)<br>À 5 minutes à pied</p>
+                </div>
+                
+                <div class="transport-option">
+                    <div class="transport-icon">
+                        <i class="fas fa-bus"></i>
+                    </div>
+                    <h4>Bus</h4>
+                    <p>Lignes 20, 56, 65, 75<br>Arrêt "République"</p>
+                </div>
+                
+                <div class="transport-option">
+                    <div class="transport-icon">
+                        <i class="fas fa-bicycle"></i>
+                    </div>
+                    <h4>Vélo</h4>
+                    <p>Station Vélib' à 100m<br>Station n° 11023</p>
+                </div>
+                
+                <div class="transport-option">
+                    <div class="transport-icon">
+                        <i class="fas fa-parking"></i>
+                    </div>
+                    <h4>Parking</h4>
+                    <p>Parking République<br>Ouvert 24h/24</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const contactForm = document.getElementById('contactForm');
+    
+    if (contactForm) {
+        contactForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Validation simple
+            let isValid = true;
+            const requiredFields = contactForm.querySelectorAll('[required]');
+            
+            requiredFields.forEach(field => {
+                if (!field.value.trim()) {
+                    isValid = false;
+                    field.style.borderColor = '#f44336';
+                } else {
+                    field.style.borderColor = '#ddd';
+                }
+            });
+            
+            if (isValid) {
+                // Simulation d'envoi
+                alert('Merci pour votre message ! Nous vous répondrons dans les plus brefs délais.\n\n(Note : Dans une version réelle, ce formulaire enverrait un email)');
+                contactForm.reset();
+            } else {
+                alert('Veuillez remplir tous les champs obligatoires.');
+            }
+        });
+    }
+});
+</script>
+{% endblock %}

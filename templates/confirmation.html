@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+
+{% block title %} - Confirmation{% endblock %}
+
+{% block content %}
+<section class="section confirmation-section">
+    <div class="container">
+        <div class="confirmation-card">
+            <div class="confirmation-icon">
+                <i class="fas fa-check-circle"></i>
+            </div>
+            
+            <h2>Merci ! Votre rendez-vous est confirmé ✔️</h2>
+            
+            <div class="confirmation-message">
+                <p>Nous avons bien reçu votre demande de rendez-vous. Vous recevrez une confirmation par email dans les prochaines minutes.</p>
+                
+                {% if appointment_id %}
+                <div class="appointment-id">
+                    <strong>Référence :</strong> RDV-{{ appointment_id }}
+                </div>
+                {% endif %}
+            </div>
+            
+            <div class="confirmation-details">
+                <h3>Prochaines étapes :</h3>
+                <ol class="steps-list">
+                    <li><strong>Vérifiez votre boîte email</strong> (et vos spams) pour notre confirmation</li>
+                    <li><strong>Notez la date et l'heure</strong> de votre rendez-vous</li>
+                    <li><strong>Apportez votre carte vitale</strong> et votre mutuelle le jour J</li>
+                    <li><strong>Annulation :</strong> Merci de nous prévenir au moins 24h à l'avance</li>
+                </ol>
+            </div>
+            
+            <div class="confirmation-reminder">
+                <div class="reminder-icon">
+                    <i class="fas fa-clock"></i>
+                </div>
+                <div class="reminder-text">
+                    <p><strong>Rappel :</strong> Veuillez arriver 10 minutes avant l'heure de votre rendez-vous pour les formalités administratives.</p>
+                </div>
+            </div>
+            
+            <div class="confirmation-actions">
+                <a href="{{ url_for('index') }}" class="btn btn-primary">
+                    <i class="fas fa-home"></i> Retour à l'accueil
+                </a>
+                <a href="{{ url_for('appointment') }}" class="btn btn-secondary">
+                    <i class="fas fa-calendar-plus"></i> Nouveau rendez-vous
+                </a>
+            </div>
+            
+            <div class="confirmation-contact">
+                <p>Si vous avez une question urgente, contactez-nous au <strong>01 23 45 67 89</strong> ou par email à <strong>contact@smiledent.fr</strong></p>
+            </div>
+        </div>
+        
+        <div class="post-confirmation-info">
+            <div class="info-box">
+                <h3><i class="fas fa-file-medical"></i> Documents à apporter</h3>
+                <ul>
+                    <li>Carte vitale et attestation de droits</li>
+                    <li>Carte de mutuelle</li>
+                    <li>Anciennes radiographies (si vous en avez)</li>
+                    <li>Liste des médicaments en cours</li>
+                </ul>
+            </div>
+            
+            <div class="info-box">
+                <h3><i class="fas fa-map-signs"></i> Comment nous trouver</h3>
+                <p><strong>Adresse :</strong> 123 Avenue du Sourire, 75000 Paris</p>
+                <p><strong>Métro :</strong> République (lignes 3, 5, 8, 9, 11)</p>
+                <p><strong>Parking :</strong> Parking République à 200m</p>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

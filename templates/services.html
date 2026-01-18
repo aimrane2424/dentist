@@ -1,0 +1,230 @@
+{% extends "base.html" %}
+
+{% block title %} - Services{% endblock %}
+
+{% block content %}
+<section class="section services-page">
+    <div class="container">
+        <div class="services-header">
+            <h1 class="section-title">Nos services dentaires</h1>
+            <p class="section-subtitle">Des soins complets adaptés à tous vos besoins bucco-dentaires.</p>
+        </div>
+        
+        <div class="services-list">
+            <!-- Service 1 -->
+            <div class="service-detail">
+                <div class="service-header">
+                    <div class="service-icon-large">
+                        <i class="fas fa-tooth"></i>
+                    </div>
+                    <div class="service-info">
+                        <h3>Consultation générale</h3>
+                        <span class="duration">30-45 min</span>
+                    </div>
+                </div>
+                
+                <div class="service-description">
+                    <p>Examen complet de votre santé bucco-dentaire incluant diagnostic, détection des caries, contrôle des gencives et conseils personnalisés pour votre hygiène dentaire.</p>
+                </div>
+                
+                <div class="service-features">
+                    <h4>Ce service comprend :</h4>
+                    <ul>
+                        <li>Examen clinique complet</li>
+                        <li>Radiographies si nécessaires</li>
+                        <li>Évaluation des risques carieux et parodontaux</li>
+                        <li>Plan de traitement personnalisé</li>
+                    </ul>
+                </div>
+                
+                <div class="service-action">
+                    <a href="{{ url_for('appointment') }}?service=consultation" class="btn btn-primary">
+                        <i class="fas fa-calendar-alt"></i> Réserver une consultation
+                    </a>
+                </div>
+            </div>
+            
+            <!-- Service 2 -->
+            <div class="service-detail">
+                <div class="service-header">
+                    <div class="service-icon-large">
+                        <i class="fas fa-spray-can"></i>
+                    </div>
+                    <div class="service-info">
+                        <h3>Détartrage</h3>
+                        <span class="duration">45-60 min</span>
+                    </div>
+                </div>
+                
+                <div class="service-description">
+                    <p>Nettoyage professionnel pour éliminer le tartre et la plaque dentaire, prévenir les maladies parodontales et maintenir une bonne santé gingivale.</p>
+                </div>
+                
+                <div class="service-features">
+                    <h4>Ce service comprend :</h4>
+                    <ul>
+                        <li>Détartrage supra et sous-gingival</li>
+                        <li>Polissage des dents</li>
+                        <li>Application de fluor si nécessaire</li>
+                        <li>Conseils d'hygiène personnalisés</li>
+                    </ul>
+                </div>
+                
+                <div class="service-action">
+                    <a href="{{ url_for('appointment') }}?service=detartrage" class="btn btn-primary">
+                        <i class="fas fa-calendar-alt"></i> Réserver un détartrage
+                    </a>
+                </div>
+            </div>
+            
+            <!-- Service 3 -->
+            <div class="service-detail">
+                <div class="service-header">
+                    <div class="service-icon-large">
+                        <i class="fas fa-sun"></i>
+                    </div>
+                    <div class="service-info">
+                        <h3>Blanchiment dentaire</h3>
+                        <span class="duration">60-90 min</span>
+                    </div>
+                </div>
+                
+                <div class="service-description">
+                    <p>Techniques modernes et sûres pour éclaircir la couleur de vos dents et obtenir un sourire plus éclatant. Méthode personnalisée selon vos besoins et sensibilités.</p>
+                </div>
+                
+                <div class="service-features">
+                    <h4>Ce service comprend :</h4>
+                    <ul>
+                        <li>Consultation préliminaire</li>
+                        <li>Blanchiment au cabinet ou à domicile</li>
+                        <li>Gouttières personnalisées</li>
+                        <li>Suivi et conseils d'entretien</li>
+                    </ul>
+                </div>
+                
+                <div class="service-action">
+                    <a href="{{ url_for('appointment') }}?service=blanchiment" class="btn btn-primary">
+                        <i class="fas fa-calendar-alt"></i> Réserver un blanchiment
+                    </a>
+                </div>
+            </div>
+            
+            <!-- Service 4 -->
+            <div class="service-detail">
+                <div class="service-header">
+                    <div class="service-icon-large">
+                        <i class="fas fa-teeth"></i>
+                    </div>
+                    <div class="service-info">
+                        <h3>Soins dentaires</h3>
+                        <span class="duration">Varie selon traitement</span>
+                    </div>
+                </div>
+                
+                <div class="service-description">
+                    <p>Traitements conservateurs pour réparer les dents endommagées par les caries ou les traumatismes. Nous utilisons des matériaux esthétiques et durables.</p>
+                </div>
+                
+                <div class="service-features">
+                    <h4>Ce service comprend :</h4>
+                    <ul>
+                        <li>Obsturations (composites)</li>
+                        <li>Inlays/Onlays</li>
+                        <li>Traitement de canal</li>
+                        <li>Reconstitutions esthétiques</li>
+                    </ul>
+                </div>
+                
+                <div class="service-action">
+                    <a href="{{ url_for('appointment') }}?service=soins" class="btn btn-primary">
+                        <i class="fas fa-calendar-alt"></i> Prendre rendez-vous
+                    </a>
+                </div>
+            </div>
+            
+            <!-- Service 5 -->
+            <div class="service-detail">
+                <div class="service-header">
+                    <div class="service-icon-large">
+                        <i class="fas fa-ambulance"></i>
+                    </div>
+                    <div class="service-info">
+                        <h3>Urgences dentaires</h3>
+                        <span class="duration">Sur rendez-vous urgent</span>
+                    </div>
+                </div>
+                
+                <div class="service-description">
+                    <p>Prise en charge rapide des urgences dentaires : douleurs aiguës, traumatismes, abcès, fractures dentaires. Nous réservons des créneaux pour les urgences.</p>
+                </div>
+                
+                <div class="service-features">
+                    <h4>Ce service comprend :</h4>
+                    <ul>
+                        <li>Diagnostic d'urgence</li>
+                        <li>Soulagement de la douleur</li>
+                        <li>Traitement d'urgence</li>
+                        <li>Planification du traitement complet</li>
+                    </ul>
+                </div>
+                
+                <div class="service-action">
+                    <a href="{{ url_for('appointment') }}?service=urgence" class="btn btn-primary">
+                        <i class="fas fa-phone-alt"></i> Appeler pour une urgence
+                    </a>
+                </div>
+            </div>
+            
+            <!-- Service 6 -->
+            <div class="service-detail">
+                <div class="service-header">
+                    <div class="service-icon-large">
+                        <i class="fas fa-teeth-open"></i>
+                    </div>
+                    <div class="service-info">
+                        <h3>Orthodontie</h3>
+                        <span class="duration">Consultation 45 min</span>
+                    </div>
+                </div>
+                
+                <div class="service-description">
+                    <p>Traitements orthodontiques pour enfants et adultes : alignement des dents, correction des malocclusions. Options traditionnelles et invisibles disponibles.</p>
+                </div>
+                
+                <div class="service-features">
+                    <h4>Ce service comprend :</h4>
+                    <ul>
+                        <li>Évaluation orthodontique</li>
+                        <li>Traitements multi-attaches</li>
+                        <li>Aligneurs invisibles</li>
+                        <li>Suivi régulier</li>
+                    </ul>
+                </div>
+                
+                <div class="service-action">
+                    <a href="{{ url_for('appointment') }}?service=orthodontie" class="btn btn-primary">
+                        <i class="fas fa-calendar-alt"></i> Consultation orthodontique
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="section pricing-section">
+    <div class="container">
+        <h2 class="section-title">Transparence des tarifs</h2>
+        <div class="pricing-info">
+            <p>Nous pratiquons des tarifs conformes à la convention nationale des chirurgiens-dentistes. Un devis détaillé vous est remis avant tout traitement.</p>
+            <p>Les soins sont pris en charge par la sécurité sociale et votre mutuelle selon votre contrat.</p>
+        </div>
+        
+        <div class="text-center">
+            <a href="{{ url_for('contact') }}" class="btn btn-secondary">
+                <i class="fas fa-phone"></i> Contactez-nous pour plus d'informations
+            </a>
+        </div>
+    </div>
+</section>
+{% endblock %}

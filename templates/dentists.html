@@ -1,0 +1,169 @@
+{% extends "base.html" %}
+
+{% block title %} - Dentistes{% endblock %}
+
+{% block content %}
+<section class="section dentists-page">
+    <div class="container">
+        <div class="dentists-header">
+            <h1 class="section-title">Notre équipe dentaire</h1>
+            <p class="section-subtitle">Des professionnels expérimentés et passionnés à votre service.</p>
+        </div>
+        
+        <div class="dentists-grid">
+            <!-- Dentiste 1 -->
+            <div class="dentist-card">
+                <div class="dentist-image">
+                    <i class="fas fa-user-md"></i>
+                </div>
+                <div class="dentist-info">
+                    <h3>Dr. Sophie Martin</h3>
+                    <span class="specialty">Chirurgien-dentiste</span>
+                    <span class="experience">15 ans d'expérience</span>
+                    
+                    <div class="dentist-description">
+                        <p>Spécialisée en esthétique dentaire et réhabilitation orale. Le Dr Martin suit régulièrement des formations pour rester à la pointe des nouvelles techniques.</p>
+                    </div>
+                    
+                    <div class="dentist-skills">
+                        <span class="skill-tag">Esthétique dentaire</span>
+                        <span class="skill-tag">Prothèses</span>
+                        <span class="skill-tag">Blanchiment</span>
+                    </div>
+                    
+                    <div class="dentist-action">
+                        <a href="{{ url_for('appointment') }}?dentist=dr-martin" class="btn btn-primary btn-small">
+                            <i class="fas fa-calendar-alt"></i> Prendre RDV
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Dentiste 2 -->
+            <div class="dentist-card">
+                <div class="dentist-image">
+                    <i class="fas fa-user-md"></i>
+                </div>
+                <div class="dentist-info">
+                    <h3>Dr. Thomas Lambert</h3>
+                    <span class="specialty">Orthodontiste</span>
+                    <span class="experience">12 ans d'expérience</span>
+                    
+                    <div class="dentist-description">
+                        <p>Expert en orthodontie pour enfants et adultes. Le Dr Lambert propose des traitements par multi-attaches et par aligneurs invisibles (Invisalign®).</p>
+                    </div>
+                    
+                    <div class="dentist-skills">
+                        <span class="skill-tag">Orthodontie</span>
+                        <span class="skill-tag">Invisalign</span>
+                        <span class="skill-tag">Orthopédie dento-faciale</span>
+                    </div>
+                    
+                    <div class="dentist-action">
+                        <a href="{{ url_for('appointment') }}?dentist=dr-lambert" class="btn btn-primary btn-small">
+                            <i class="fas fa-calendar-alt"></i> Prendre RDV
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Dentiste 3 -->
+            <div class="dentist-card">
+                <div class="dentist-image">
+                    <i class="fas fa-user-md"></i>
+                </div>
+                <div class="dentist-info">
+                    <h3>Dr. Claire Dubois</h3>
+                    <span class="specialty">Parodontiste</span>
+                    <span class="experience">8 ans d'expérience</span>
+                    
+                    <div class="dentist-description">
+                        <p>Spécialiste des maladies des gencives et des tissus de soutien des dents. Le Dr Dubois propose des traitements parodontaux non-chirurgicaux et chirurgicaux.</p>
+                    </div>
+                    
+                    <div class="dentist-skills">
+                        <span class="skill-tag">Parodontologie</span>
+                        <span class="skill-tag">Chirurgie parodontale</span>
+                        <span class="skill-tag">Greffes gingivales</span>
+                    </div>
+                    
+                    <div class="dentist-action">
+                        <a href="{{ url_for('appointment') }}?dentist=dr-dubois" class="btn btn-primary btn-small">
+                            <i class="fas fa-calendar-alt"></i> Prendre RDV
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Dentiste 4 -->
+            <div class="dentist-card">
+                <div class="dentist-image">
+                    <i class="fas fa-user-md"></i>
+                </div>
+                <div class="dentist-info">
+                    <h3>Dr. Julien Moreau</h3>
+                    <span class="specialty">Chirurgien-dentiste</span>
+                    <span class="experience">10 ans d'expérience</span>
+                    
+                    <div class="dentist-description">
+                        <p>Spécialisé en implantologie et chirurgie orale. Le Dr Moreau place des implants dentaires et réalise des extractions complexes en toute sécurité.</p>
+                    </div>
+                    
+                    <div class="dentist-skills">
+                        <span class="skill-tag">Implantologie</span>
+                        <span class="skill-tag">Chirurgie orale</span>
+                        <span class="skill-tag">Extractions complexes</span>
+                    </div>
+                    
+                    <div class="dentist-action">
+                        <a href="{{ url_for('appointment') }}?dentist=dr-moreau" class="btn btn-primary btn-small">
+                            <i class="fas fa-calendar-alt"></i> Prendre RDV
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="assistants-section">
+            <h2 class="section-subtitle">Notre équipe d'assistantes</h2>
+            <div class="assistants-grid">
+                <div class="assistant-card">
+                    <div class="assistant-icon">
+                        <i class="fas fa-user-nurse"></i>
+                    </div>
+                    <h4>Marie Petit</h4>
+                    <p>Assistante dentaire - 8 ans d'expérience</p>
+                </div>
+                
+                <div class="assistant-card">
+                    <div class="assistant-icon">
+                        <i class="fas fa-user-nurse"></i>
+                    </div>
+                    <h4>Emma Bernard</h4>
+                    <p>Assistante dentaire - 5 ans d'expérience</p>
+                </div>
+                
+                <div class="assistant-card">
+                    <div class="assistant-icon">
+                        <i class="fas fa-user-nurse"></i>
+                    </div>
+                    <h4>Lucie Roux</h4>
+                    <p>Secrétaire médicale - 6 ans d'expérience</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="section cta-section">
+    <div class="container">
+        <div class="cta-content">
+            <h2>Vous souhaitez consulter un spécialiste ?</h2>
+            <p>Prenez rendez-vous avec le dentiste de votre choix en quelques clics.</p>
+            <a href="{{ url_for('appointment') }}" class="btn btn-primary btn-large">
+                <i class="fas fa-calendar-plus"></i> Prendre rendez-vous
+            </a>
+        </div>
+    </div>
+</section>
+{% endblock %}

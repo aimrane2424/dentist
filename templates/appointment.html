@@ -1,0 +1,167 @@
+{% extends "base.html" %}
+
+{% block title %} - Prendre rendez-vous{% endblock %}
+
+{% block content %}
+<section class="section appointment-section">
+    <div class="container">
+        <div class="appointment-header">
+            <h1 class="section-title">Prendre rendez-vous</h1>
+            <p class="section-subtitle">Remplissez le formulaire ci-dessous pour réserver votre consultation.</p>
+        </div>
+        
+        <div class="appointment-form-container">
+            <form id="appointmentForm" class="appointment-form" method="POST" action="{{ url_for('appointment') }}">
+                <div class="form-message">
+                    <p><i class="fas fa-info-circle"></i> Vous recevrez une confirmation par email après soumission.</p>
+                </div>
+                
+                <h3 class="form-subtitle">Informations personnelles</h3>
+                
+                <div class="form-group">
+                    <label for="full_name">Nom complet *</label>
+                    <input type="text" id="full_name" name="full_name" required placeholder="Votre nom et prénom">
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="phone">Téléphone *</label>
+                        <input type="tel" id="phone" name="phone" required placeholder="01 23 45 67 89">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="email">Email *</label>
+                        <input type="email" id="email" name="email" required placeholder="votre@email.com">
+                    </div>
+                </div>
+                
+                <h3 class="form-subtitle">Détails du rendez-vous</h3>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="service">Service demandé *</label>
+                        <select id="service" name="service" required>
+                            <option value="">Sélectionnez un service</option>
+                            <option value="consultation">Consultation générale</option>
+                            <option value="detartrage">Détartrage</option>
+                            <option value="blanchiment">Blanchiment dentaire</option>
+                            <option value="soins">Soins dentaires</option>
+                            <option value="urgence">Urgence dentaire</option>
+                            <option value="orthodontie">Orthodontie</option>
+                            <option value="implant">Implantologie</option>
+                            <option value="autre">Autre (précisez en remarques)</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="dentist">Dentiste (optionnel)</label>
+                        <select id="dentist" name="dentist">
+                            <option value="">Peu importe</option>
+                            <option value="dr-martin">Dr. Sophie Martin</option>
+                            <option value="dr-lambert">Dr. Thomas Lambert</option>
+                            <option value="dr-dubois">Dr. Claire Dubois</option>
+                            <option value="dr-moreau">Dr. Julien Moreau</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="date">Date souhaitée *</label>
+                        <input type="date" id="date" name="date" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="time">Heure préférée *</label>
+                        <select id="time" name="time" required>
+                            <option value="">Sélectionnez une heure</option>
+                            <!-- Les options seront générées par JavaScript -->
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="notes">Remarques (optionnel)</label>
+                    <textarea id="notes" name="notes" rows="4" placeholder="Informations supplémentaires, douleurs spécifiques, etc."></textarea>
+                </div>
+                
+                <div class="form-group checkbox-group">
+                    <input type="checkbox" id="consent" name="consent" required>
+                    <label for="consent">J'accepte que mes données soient traitées dans le cadre de la prise de rendez-vous et du suivi médical. *</label>
+                </div>
+                
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary btn-large btn-block">
+                        <i class="fas fa-calendar-check"></i> Confirmer le rendez-vous
+                    </button>
+                </div>
+                
+                <div class="form-footer">
+                    <p><small>* Champs obligatoires. Nous vous contacterons pour confirmer votre rendez-vous.</small></p>
+                </div>
+            </form>
+        </div>
+        
+        <div class="appointment-info">
+            <div class="info-card">
+                <div class="info-icon">
+                    <i class="fas fa-phone-alt"></i>
+                </div>
+                <div class="info-content">
+                    <h3>Besoin d'une urgence ?</h3>
+                    <p>Appelez-nous directement au <strong>01 23 45 67 89</strong> pour une prise en charge rapide.</p>
+                </div>
+            </div>
+            
+            <div class="info-card">
+                <div class="info-icon">
+                    <i class="fas fa-clock"></i>
+                </div>
+                <div class="info-content">
+                    <h3>Heures d'ouverture</h3>
+                    <p>Lun-Ven: 8h30-18h30<br>Samedi: 9h00-13h00<br>Urgences: selon disponibilité</p>
+                </div>
+            </div>
+            
+            <div class="info-card">
+                <div class="info-icon">
+                    <i class="fas fa-map-marker-alt"></i>
+                </div>
+                <div class="info-content">
+                    <h3>Notre adresse</h3>
+                    <p>123 Avenue du Sourire<br>75000 Paris<br>Métro: République (lignes 3, 5, 8, 9, 11)</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Récupérer les paramètres d'URL pour pré-remplir le formulaire
+    const urlParams = new URLSearchParams(window.location.search);
+    const serviceParam = urlParams.get('service');
+    const dentistParam = urlParams.get('dentist');
+    
+    if (serviceParam && document.getElementById('service')) {
+        document.getElementById('service').value = serviceParam;
+    }
+    
+    if (dentistParam && document.getElementById('dentist')) {
+        document.getElementById('dentist').value = dentistParam;
+    }
+    
+    // Pré-remplir la date avec demain par défaut
+    const dateInput = document.getElementById('date');
+    if (dateInput) {
+        const tomorrow = new Date();
+        tomorrow.setDate(tomorrow.getDate() + 1);
+        const tomorrowStr = tomorrow.toISOString().split('T')[0];
+        dateInput.value = tomorrowStr;
+        dateInput.min = tomorrowStr; // On ne permet pas les dates passées
+    }
+});
+</script>
+{% endblock %}

@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - Tableau de bord</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+</head>
+<body class="admin-dashboard">
+    <!-- Header Admin -->
+    <header class="admin-header">
+        <div class="container">
+            <div class="admin-navbar">
+                <div class="admin-brand">
+                    <a href="{{ url_for('admin_dashboard') }}" class="logo">
+                        <i class="fas fa-tooth"></i>
+                        <span>Smile<span class="logo-highlight">Dent</span> Admin</span>
+                    </a>
+                </div>
+                
+                <div class="admin-user">
+                    <span class="user-info">
+                        <i class="fas fa-user-circle"></i>
+                        {{ session.get('username', 'Admin') }}
+                    </span>
+                    <a href="{{ url_for('admin_logout') }}" class="btn-logout">
+                        <i class="fas fa-sign-out-alt"></i> Déconnexion
+                    </a>
+                </div>
+            </div>
+        </div>
+    </header>
+    
+    <!-- Sidebar -->
+    <div class="admin-container">
+        <aside class="admin-sidebar">
+            <nav class="sidebar-nav">
+                <ul>
+                    <li class="active">
+                        <a href="{{ url_for('admin_dashboard') }}">
+                            <i class="fas fa-tachometer-alt"></i>
+                            <span>Tableau de bord</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#appointments">
+                            <i class="fas fa-calendar-alt"></i>
+                            <span>Rendez-vous</span>
+                            <span class="badge">{{ stats.total }}</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#stats">
+                            <i class="fas fa-chart-bar"></i>
+                            <span>Statistiques</span>
+                        </a>
+                    </li>
+                   
+                    <li>
+                        <a href="{{ url_for('index') }}" target="_blank">
+                            <i class="fas fa-external-link-alt"></i>
+                            <span>Voir le site</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </aside>
+        
+        <!-- Contenu principal -->
+        <main class="admin-content">
+            <div class="container-fluid">
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% if messages %}
+                        {% for category, message in messages %}
+                            <div class="alert alert-{{ category }}">
+                                <button type="button" class="close-alert">&times;</button>
+                                {{ message }}
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
+                
+                <!-- Statistiques -->
+                <div class="stats-section">
+                    <h1 class="page-title">Tableau de bord</h1>
+                    <p class="page-subtitle">Gestion des rendez-vous - Cabinet SmileDent</p>
+                    
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-icon total">
+                                <i class="fas fa-calendar-check"></i>
+                            </div>
+                            <div class="stat-info">
+                                <h3>{{ stats.total }}</h3>
+                                <p>Rendez-vous au total</p>
+                            </div>
+                        </div>
+                        
+                        <div class="stat-card">
+                            <div class="stat-icon today">
+                                <i class="fas fa-calendar-day"></i>
+                            </div>
+                            <div class="stat-info">
+                                <h3>{{ stats.today }}</h3>
+                                <p>Rendez-vous aujourd'hui</p>
+                            </div>
+                        </div>
+                        
+                        <div class="stat-card">
+                            <div class="stat-icon week">
+                                <i class="fas fa-calendar-week"></i>
+                            </div>
+                            <div class="stat-info">
+                                <h3>{{ stats.this_week }}</h3>
+                                <p>Cette semaine</p>
+                            </div>
+                        </div>
+                        
+                        <div class="stat-card">
+                            <div class="stat-icon services">
+                                <i class="fas fa-teeth"></i>
+                            </div>
+                            <div class="stat-info">
+                                <h3>{{ stats.by_service|length }}</h3>
+                                <p>Types de services</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Tableau des rendez-vous -->
+                <div class="appointments-section" id="appointments">
+                    <div class="section-header">
+                        <h2>Tous les rendez-vous</h2>
+                        <div class="section-actions">
+                            <button id="refreshBtn" class="btn btn-secondary btn-sm">
+                                <i class="fas fa-sync-alt"></i> Actualiser
+                            </button>
+                            <button id="exportBtn" class="btn btn-secondary btn-sm">
+                                <i class="fas fa-download"></i> Exporter
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="table-container">
+                        <table id="appointmentsTable" class="appointments-table">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Nom complet</th>
+                                    <th>Téléphone</th>
+                                    <th>Email</th>
+                                    <th>Service</th>
+                                    <th>Dentiste</th>
+                                    <th>Date</th>
+                                    <th>Heure</th>
+                                    <th>Date de soumission</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for appointment in appointments %}
+                                <tr>
+                                    <td class="id-cell">
+                                        <span class="appointment-id">RDV-{{ appointment.id }}</span>
+                                    </td>
+                                    <td class="name-cell">
+                                        <strong>{{ appointment.full_name }}</strong>
+                                    </td>
+                                    <td class="phone-cell">
+                                        <a href="tel:{{ appointment.phone }}">
+                                            <i class="fas fa-phone"></i> {{ appointment.phone }}
+                                        </a>
+                                    </td>
+                                    <td class="email-cell">
+                                        <a href="mailto:{{ appointment.email }}">
+                                            <i class="fas fa-envelope"></i> {{ appointment.email }}
+                                        </a>
+                                    </td>
+                                    <td class="service-cell">
+                                        {% if appointment.service == 'consultation' %}
+                                            <span class="service-badge">Consultation</span>
+                                        {% elif appointment.service == 'detartrage' %}
+                                            <span class="service-badge">Détartrage</span>
+                                        {% elif appointment.service == 'blanchiment' %}
+                                            <span class="service-badge">Blanchiment</span>
+                                        {% elif appointment.service == 'soins' %}
+                                            <span class="service-badge">Soins dentaires</span>
+                                        {% elif appointment.service == 'urgence' %}
+                                            <span class="service-badge urgent">Urgence</span>
+                                        {% elif appointment.service == 'orthodontie' %}
+                                            <span class="service-badge">Orthodontie</span>
+                                        {% else %}
+                                            <span class="service-badge">{{ appointment.service }}</span>
+                                        {% endif %}
+                                    </td>
+                                    <td class="dentist-cell">
+                                        {% if appointment.dentist %}
+                                            {% if appointment.dentist == 'dr-martin' %}
+                                                Dr. Sophie Martin
+                                            {% elif appointment.dentist == 'dr-lambert' %}
+                                                Dr. Thomas Lambert
+                                            {% elif appointment.dentist == 'dr-dubois' %}
+                                                Dr. Claire Dubois
+                                            {% elif appointment.dentist == 'dr-moreau' %}
+                                                Dr. Julien Moreau
+                                            {% else %}
+                                                {{ appointment.dentist }}
+                                            {% endif %}
+                                        {% else %}
+                                            <span class="text-muted">Non spécifié</span>
+                                        {% endif %}
+                                    </td>
+                                    <td class="date-cell">
+                                        <span class="date-display">
+                                            {{ appointment.date }}
+                                        </span>
+                                    </td>
+                                    <td class="time-cell">
+                                        <span class="time-display">
+                                            {{ appointment.time }}
+                                        </span>
+                                    </td>
+                                    <td class="submitted-cell">
+                                        <small>{{ appointment.submitted_at }}</small>
+                                    </td>
+                                    <td class="actions-cell">
+                                        <div class="action-buttons">
+                                            <button class="btn-view" title="Voir les détails"
+                                                    data-id="{{ appointment.id }}">
+                                                <i class="fas fa-eye"></i>
+                                            </button>
+                                            <form method="POST" action="{{ url_for('delete_appointment', appointment_id=appointment.id) }}" 
+                                                  class="delete-form" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer ce rendez-vous?');">
+                                                <button type="submit" class="btn-delete" title="Supprimer">
+                                                    <i class="fas fa-trash"></i>
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </td>
+                                </tr>
+                                {% else %}
+                                <tr>
+                                    <td colspan="10" class="empty-table">
+                                        <div class="empty-state">
+                                            <i class="fas fa-calendar-times"></i>
+                                            <h3>Aucun rendez-vous enregistré</h3>
+                                            <p>Les rendez-vous pris par les patients apparaîtront ici.</p>
+                                        </div>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                
+                <!-- Statistiques détaillées -->
+                <div class="detailed-stats" id="stats">
+                    <div class="stats-row">
+                        <div class="chart-card">
+                            <h3>Répartition par service</h3>
+                            <div class="chart-container">
+                                <table class="services-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Service</th>
+                                            <th>Nombre</th>
+                                            <th>Pourcentage</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for service, count in stats.by_service.items() %}
+                                        {% set service_name = 
+                                            'consultation' if service == 'consultation' else
+                                            'Détartrage' if service == 'detartrage' else
+                                            'Blanchiment' if service == 'blanchiment' else
+                                            'Soins dentaires' if service == 'soins' else
+                                            'Urgence' if service == 'urgence' else
+                                            'Orthodontie' if service == 'orthodontie' else
+                                            service
+                                        %}
+                                        <tr>
+                                            <td>{{ service_name }}</td>
+                                            <td>{{ count }}</td>
+                                            <td>
+                                                <div class="percentage-bar">
+                                                    <div class="bar-fill" style="width: {{ (count / stats.total * 100) if stats.total > 0 else 0 }}%">
+                                                        <span>{{ "%.1f"|format(count / stats.total * 100) if stats.total > 0 else 0 }}%</span>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        
+                        
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    
+    <!-- Modal pour voir les détails -->
+    <div id="detailsModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Détails du rendez-vous</h2>
+                <button class="close-modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div id="modalContent">
+                    <!-- Contenu chargé dynamiquement -->
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary close-modal">Fermer</button>
+            </div>
+        </div>
+    </div>
+    
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <script src="{{ url_for('static', filename='js/admin.js') }}"></script>
+</body>
+</html>

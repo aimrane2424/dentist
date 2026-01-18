@@ -1,0 +1,146 @@
+{% extends "base.html" %}
+
+{% block title %} - À propos{% endblock %}
+
+{% block content %}
+<section class="section about-hero">
+    <div class="container">
+        <div class="about-header">
+            <h1 class="section-title">Notre cabinet dentaire</h1>
+            <p class="section-subtitle">Des soins professionnels avec une équipe qualifiée et des équipements modernes.</p>
+        </div>
+        
+        <div class="about-content">
+            <div class="about-image">
+                <div class="image-placeholder">
+                    <i class="fas fa-clinic-medical"></i>
+                </div>
+            </div>
+            
+            <div class="about-text">
+                <h2>Notre mission</h2>
+                <p>Notre cabinet dentaire offre des soins professionnels avec une équipe qualifiée et des équipements modernes. Nous nous engageons à fournir des traitements de haute qualité dans un environnement confortable et accueillant.</p>
+                
+                <div class="about-stats">
+                    <div class="stat-item">
+                        <div class="stat-number">+10</div>
+                        <div class="stat-text">ans d'expérience</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">5000+</div>
+                        <div class="stat-text">patients satisfaits</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">100%</div>
+                        <div class="stat-text">stérilisation garantie</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="section values-section">
+    <div class="container">
+        <h2 class="section-title">Nos valeurs</h2>
+        
+        <div class="values-grid">
+            <div class="value-card">
+                <div class="value-icon">
+                    <i class="fas fa-award"></i>
+                </div>
+                <h3>Excellence</h3>
+                <p>Nous maintenons les plus hauts standards de qualité dans tous nos traitements et services.</p>
+            </div>
+            
+            <div class="value-card">
+                <div class="value-icon">
+                    <i class="fas fa-shield-alt"></i>
+                </div>
+                <h3>Hygiène & sécurité</h3>
+                <p>Protocoles stricts de stérilisation et équipements modernes pour votre sécurité.</p>
+            </div>
+            
+            <div class="value-card">
+                <div class="value-icon">
+                    <i class="fas fa-heart"></i>
+                </div>
+                <h3>Accueil chaleureux</h3>
+                <p>Une équipe à l'écoute pour vous mettre à l'aise dès votre arrivée.</p>
+            </div>
+            
+            <div class="value-card">
+                <div class="value-icon">
+                    <i class="fas fa-clock"></i>
+                </div>
+                <h3>Respect du temps</h3>
+                <p>Nous valorisons votre temps et faisons tout pour respecter les horaires de rendez-vous.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="section team-preview">
+    <div class="container">
+        <div class="team-header">
+            <h2 class="section-title">Notre équipe</h2>
+            <p>Une équipe de professionnels dévoués à votre santé bucco-dentaire.</p>
+        </div>
+        
+        <div class="dentists-preview">
+            <div class="dentist-preview-card">
+                <div class="dentist-preview-image">
+                    <i class="fas fa-user-md"></i>
+                </div>
+                <h3>Dr. Sophie Martin</h3>
+                <p>Chirurgien-dentiste - 15 ans d'expérience</p>
+            </div>
+            
+            <div class="dentist-preview-card">
+                <div class="dentist-preview-image">
+                    <i class="fas fa-user-md"></i>
+                </div>
+                <h3>Dr. Thomas Lambert</h3>
+                <p>Orthodontiste - 12 ans d'expérience</p>
+            </div>
+            
+            <div class="dentist-preview-card">
+                <div class="dentist-preview-image">
+                    <i class="fas fa-user-md"></i>
+                </div>
+                <h3>Dr. Claire Dubois</h3>
+                <p>Parodontiste - 8 ans d'expérience</p>
+            </div>
+        </div>
+        
+        <div class="text-center">
+            <a href="{{ url_for('dentists') }}" class="btn btn-secondary">Voir toute l'équipe</a>
+        </div>
+    </div>
+</section>
+
+<section class="section equipment-section">
+    <div class="container">
+        <div class="equipment-content">
+            <div class="equipment-text">
+                <h2>Équipements modernes</h2>
+                <p>Notre cabinet est équipé des dernières technologies dentaires pour des diagnostics précis et des traitements efficaces :</p>
+                
+                <ul class="equipment-list">
+                    <li><i class="fas fa-check-circle"></i> Radiographie numérique</li>
+                    <li><i class="fas fa-check-circle"></i> Caméra intra-orale</li>
+                    <li><i class="fas fa-check-circle"></i> Scanner 3D</li>
+                    <li><i class="fas fa-check-circle"></i> Laser dentaire</li>
+                    <li><i class="fas fa-check-circle"></i> Système de stérilisation avancé</li>
+                </ul>
+            </div>
+            
+            <div class="equipment-image">
+                <div class="image-placeholder">
+                    <i class="fas fa-teeth"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

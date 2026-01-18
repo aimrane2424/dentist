@@ -1,0 +1,33 @@
+dentiste-site/
+├── .firebaserc
+├── .gitignore
+├── app.py                  # Fichier principal de l'application Flask
+├── appointments.json       # Fichier JSON pour les rendez-vous
+├── firebase.json
+├── Procfile
+├── requirements.txt
+├── runtime.txt
+├── structure.txt           # Fichier de structure du projet
+├── public/
+│   ├── 404.html
+│   └── index.html
+├── static/                 # Dossier des fichiers statiques
+│   ├── css/
+│   │   ├── admin.css       # Styles pour l'administration
+│   │   └── style.css       # Styles principaux
+│   └── js/
+│       ├── admin.js        # Scripts pour l'administration
+│       └── script.js       # Scripts principaux
+└── templates/              # Dossier des templates HTML
+    ├── about.html          # Page À propos
+    ├── admin_dashboard.html # Tableau de bord administrateur
+    ├── admin_login.html    # Page de connexion administrateur
+    ├── appointment.html    # Page de prise de rendez-vous
+    ├── base.html           # Template de base
+    ├── confirmation.html   # Page de confirmation
+    ├── contact.html       # Page de contact
+    ├── dentists.html       # Page des dentistes
+    ├── index.html          # Page d'accueil
+    └── services.html       # Page des services
+
+Note: Structure complète du projet dentiste-site générée automatiquement.

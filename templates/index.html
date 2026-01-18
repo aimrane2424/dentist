@@ -1,0 +1,163 @@
+{% extends "base.html" %}
+
+{% block title %} - Accueil{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero">
+    <div class="container">
+        <div class="hero-content">
+            <h1 class="hero-title">Votre sourire, notre priorité <span class="tooth-emoji">🦷</span></h1>
+            <p class="hero-description">Cabinet dentaire moderne, soins de qualité et prise de rendez-vous en ligne.</p>
+            <a href="{{ url_for('appointment') }}" class="btn btn-primary">
+                <i class="fas fa-calendar-check"></i> Prendre rendez-vous
+            </a>
+        </div>
+        <div class="hero-image">
+            <div class="image-placeholder">
+                <i class="fas fa-smile-beam"></i>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Pourquoi nous choisir -->
+<section class="section why-us">
+    <div class="container">
+        <h2 class="section-title">Pourquoi nous choisir</h2>
+        <div class="features">
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-user-md"></i>
+                </div>
+                <h3>Équipe qualifiée</h3>
+                <p>Des dentistes expérimentés avec plus de 10 ans d'expérience pour des soins de qualité.</p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-clock"></i>
+                </div>
+                <h3>Rendez-vous rapides</h3>
+                <p>Obtenez un rendez-vous dans les 48h, même pour les urgences dentaires.</p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-shield-alt"></i>
+                </div>
+                <h3>Hygiène & Sécurité</h3>
+                <p>Un environnement stérile et des équipements modernes pour votre sécurité.</p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-comments-dollar"></i>
+                </div>
+                <h3>Tarifs transparents</h3>
+                <p>Devis clairs et détaillés avant tout traitement, avec possibilité de paiement en plusieurs fois.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Services rapides -->
+<section class="section services-preview">
+    <div class="container">
+        <h2 class="section-title">Nos services dentaires</h2>
+        <div class="services-grid">
+            <div class="service-preview">
+                <div class="service-icon">
+                    <i class="fas fa-tooth"></i>
+                </div>
+                <h3>Consultation générale</h3>
+                <p>Examen complet de votre santé bucco-dentaire.</p>
+            </div>
+            
+            <div class="service-preview">
+                <div class="service-icon">
+                    <i class="fas fa-spray-can"></i>
+                </div>
+                <h3>Détartrage</h3>
+                <p>Nettoyage professionnel pour des dents saines.</p>
+            </div>
+            
+            <div class="service-preview">
+                <div class="service-icon">
+                    <i class="fas fa-sun"></i>
+                </div>
+                <h3>Blanchiment</h3>
+                <p>Techniques modernes pour un sourire éclatant.</p>
+            </div>
+            
+            <div class="service-preview">
+                <div class="service-icon">
+                    <i class="fas fa-teeth"></i>
+                </div>
+                <h3>Soins dentaires</h3>
+                <p>Soins adaptés à chaque besoin spécifique.</p>
+            </div>
+        </div>
+        <div class="text-center">
+            <a href="{{ url_for('services') }}" class="btn btn-secondary">Voir tous nos services</a>
+        </div>
+    </div>
+</section>
+
+<!-- Avis clients (optionnel) -->
+<section class="section testimonials">
+    <div class="container">
+        <h2 class="section-title">Ce que disent nos patients</h2>
+        <div class="testimonial-slider">
+            <div class="testimonial-card">
+                <div class="testimonial-content">
+                    <p>"Très professionnel, le personnel est accueillant et les soins sont effectués avec douceur. Je recommande!"</p>
+                </div>
+                <div class="testimonial-author">
+                    <div class="author-info">
+                        <h4>Marie L.</h4>
+                        <span>Patient depuis 5 ans</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="testimonial-card">
+                <div class="testimonial-content">
+                    <p>"J'avais une urgence dentaire, j'ai pu avoir un rendez-vous le jour même. Excellent service!"</p>
+                </div>
+                <div class="testimonial-author">
+                    <div class="author-info">
+                        <h4>Thomas D.</h4>
+                        <span>Nouveau patient</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="testimonial-card">
+                <div class="testimonial-content">
+                    <p>"Cabinet moderne et équipements à la pointe. Je me sens entre de bonnes mains à chaque visite."</p>
+                </div>
+                <div class="testimonial-author">
+                    <div class="author-info">
+                        <h4>Sophie M.</h4>
+                        <span>Patient depuis 3 ans</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CTA pour prise de rendez-vous -->
+<section class="cta-section">
+    <div class="container">
+        <div class="cta-content">
+            <h2>Prenez rendez-vous en ligne dès maintenant</h2>
+            <p>Simplifiez-vous la vie avec notre système de réservation en ligne. Choisissez le créneau qui vous convient.</p>
+            <a href="{{ url_for('appointment') }}" class="btn btn-primary btn-large">
+                <i class="fas fa-calendar-plus"></i> Réserver en ligne
+            </a>
+        </div>
+    </div>
+</section>
+{% endblock %}

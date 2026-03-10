@@ -1,12 +1,12 @@
 dentiste-site/
-├── .firebaserc
 ├── .gitignore
 ├── app.py                  # Fichier principal de l'application Flask
 ├── appointments.json       # Fichier JSON pour les rendez-vous
-├── firebase.json
+├── dentist.db              # Base de données SQLite
 ├── Procfile
 ├── requirements.txt
 ├── runtime.txt
+├── serviceAccountKey.json  # Clé de compte de service Firebase
 ├── structure.txt           # Fichier de structure du projet
 ├── public/
 │   ├── 404.html
@@ -19,6 +19,8 @@ dentiste-site/
 │       ├── admin.js        # Scripts pour l'administration
 │       └── script.js       # Scripts principaux
 └── templates/              # Dossier des templates HTML
+    ├── 404.html            # Page d'erreur 404
+    ├── 500.html            # Page d'erreur 500
     ├── about.html          # Page À propos
     ├── admin_dashboard.html # Tableau de bord administrateur
     ├── admin_login.html    # Page de connexion administrateur

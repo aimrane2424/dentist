@@ -133,38 +133,3 @@
     </div>
 </section>
 {% endblock %}
-
-{% block scripts %}
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    const contactForm = document.getElementById('contactForm');
-    
-    if (contactForm) {
-        contactForm.addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            // Validation simple
-            let isValid = true;
-            const requiredFields = contactForm.querySelectorAll('[required]');
-            
-            requiredFields.forEach(field => {
-                if (!field.value.trim()) {
-                    isValid = false;
-                    field.style.borderColor = '#f44336';
-                } else {
-                    field.style.borderColor = '#ddd';
-                }
-            });
-            
-            if (isValid) {
-                // Simulation d'envoi
-                alert('Merci pour votre message ! Nous vous répondrons dans les plus brefs délais.\n\n(Note : Dans une version réelle, ce formulaire enverrait un email)');
-                contactForm.reset();
-            } else {
-                alert('Veuillez remplir tous les champs obligatoires.');
-            }
-        });
-    }
-});
-</script>
-{% endblock %}

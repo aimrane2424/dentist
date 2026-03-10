@@ -67,3 +67,18 @@ node_modules/
 
 # dataconnect generated files
 .dataconnect
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+
+# Base de données SQLite (données locales)
+dentist.db
+
+# Fichiers sensibles
+serviceAccountKey.json
+appointments.json
+
+# Dossier public Firebase (non utilisé par Flask)
+public/

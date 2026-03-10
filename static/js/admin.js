@@ -28,12 +28,13 @@ $(document).ready(function() {
                 }
 
                 // إنشاء رأس الـ CSV
-                let csv = 'ID,Nom complet,Téléphone,Email,Service,Dentiste,Date,Heure,Date de soumission,Notes\n';
+                let csv = 'ID,Nom complet,Téléphone,Email,Service,Dentiste,Date,Heure,Date de soumission,Notes,Statut\n';
 
                 // ملء البيانات
                 appointments.forEach(apt => {
-                    const notes = (apt.notes || '').replace(/"/g, '""'); // حماية من الفواصل والاقتباسات
-                    csv += `"${apt.id}","${apt.full_name}","${apt.phone}","${apt.email}","${apt.service}","${apt.dentist}","${apt.date}","${apt.time}","${apt.submitted_at}","${notes}"\n`;
+                    const notes = (apt.notes || '').replace(/"/g, '""');
+                    const status = apt.status || 'pending';
+                    csv += `"${apt.id}","${apt.full_name}","${apt.phone}","${apt.email}","${apt.service}","${apt.dentist}","${apt.date}","${apt.time}","${apt.submitted_at}","${notes}","${status}"\n`;
                 });
 
                 // تحميل الملف
@@ -111,6 +112,13 @@ function showAppointmentDetails(appointmentId) {
                     '': 'Non spécifié'
                 }[appointment.dentist] || 'Non spécifié';
 
+                const statusLabel = {
+                    'pending': 'En attente',
+                    'confirmed': 'Confirmé',
+                    'cancelled': 'Annulé'
+                }[appointment.status] || 'En attente';
+                const statusClass = appointment.status || 'pending';
+
                 // Construire le contenu HTML
                 const content = `
                     <div class="appointment-details">
@@ -157,6 +165,10 @@ function showAppointmentDetails(appointmentId) {
                         
                         <div class="detail-group">
                             <h3>Informations système</h3>
+                            <div class="detail-item">
+                                <span class="detail-label">Statut :</span>
+                                <span class="detail-value status-badge status-${statusClass}">${statusLabel}</span>
+                            </div>
                             <div class="detail-item">
                                 <span class="detail-label">ID du rendez-vous :</span>
                                 <span class="detail-value appointment-id">${appointment.id}</span>

@@ -17,7 +17,7 @@
                 
                 {% if appointment_id %}
                 <div class="appointment-id">
-                    <strong>Référence :</strong> RDV-{{ appointment_id }}
+                    <strong>Référence :</strong> RDV-{{ appointment_id[:8].upper() }}
                 </div>
                 {% endif %}
             </div>

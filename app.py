@@ -4,13 +4,19 @@ SmileDent - تطبيق حجز مواعيد عيادة الأسنان
 تمت إضافة قاعدة بيانات SQLite لتخزين المواعيد
 """
 
+import sys
+if hasattr(sys.stdout, 'reconfigure'):
+    sys.stdout.reconfigure(encoding='utf-8', errors='replace')
+
 from flask import Flask, render_template, request, redirect, url_for, flash, session, jsonify
 import json
 from datetime import datetime, timedelta
 import os
 import sqlite3
+import uuid
 from functools import wraps
 from dotenv import load_dotenv
+from werkzeug.security import generate_password_hash, check_password_hash
 
 # تحميل المتغيرات البيئية من ملف .env
 load_dotenv()
@@ -20,13 +26,17 @@ app = Flask(__name__)
 app.secret_key = os.environ.get('SECRET_KEY', 'dentiste_smile_secret_key_2024_secure_123')
 app.config['ADMIN_USERNAME'] = os.environ.get('ADMIN_USERNAME', 'admin')
 app.config['ADMIN_PASSWORD'] = os.environ.get('ADMIN_PASSWORD', 'admin123')
+app.config['SESSION_COOKIE_HTTPONLY'] = True
+app.config['SESSION_COOKIE_SAMESITE'] = 'Lax'
+app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(hours=8)
 
 # اسم ملف قاعدة البيانات
-DATABASE = 'dentist.db'
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+DATABASE = os.path.join(BASE_DIR, 'dentist.db')
 
 # ========== دوال قاعدة البيانات SQLite ==========
 
-def init_db():
+def init_db():  
     """
     إنشاء قاعدة البيانات والجداول إذا لم تكن موجودة
     """
@@ -45,7 +55,8 @@ def init_db():
             date TEXT NOT NULL,
             time TEXT NOT NULL,
             submitted_at TEXT NOT NULL,
-            notes TEXT
+            notes TEXT,
+            status TEXT DEFAULT 'pending'
         )
     ''')
     
@@ -58,13 +69,22 @@ def init_db():
         )
     ''')
     
-    # إدخال مستخدم المدير إذا لم يكن موجوداً
+    # إدخال مستخدم المدير إذا لم يكن موجوداً (باسورد مشفّر)
+    hashed_pw = generate_password_hash(app.config['ADMIN_PASSWORD'])
     try:
         c.execute("INSERT INTO users (username, password) VALUES (?, ?)",
-                  (app.config['ADMIN_USERNAME'], app.config['ADMIN_PASSWORD']))
+                  (app.config['ADMIN_USERNAME'], hashed_pw))
     except sqlite3.IntegrityError:
-        pass  # المستخدم موجود مسبقاً
+        # تحديث الباسورد في حالة ما كانش مشفّر
+        c.execute("UPDATE users SET password = ? WHERE username = ?",
+                  (hashed_pw, app.config['ADMIN_USERNAME']))
     
+    # إضافة عمود status للجداول القديمة إذا لم يكن موجوداً
+    try:
+        c.execute("ALTER TABLE appointments ADD COLUMN status TEXT DEFAULT 'pending'")
+    except sqlite3.OperationalError:
+        pass  # العمود موجود مسبقاً
+
     conn.commit()
     conn.close()
     print("✅ تم تهيئة قاعدة البيانات بنجاح")
@@ -99,8 +119,8 @@ def save_appointment(appointment_data):
     try:
         conn = get_db_connection()
         conn.execute('''
-            INSERT INTO appointments (id, full_name, phone, email, service, dentist, date, time, submitted_at, notes)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            INSERT INTO appointments (id, full_name, phone, email, service, dentist, date, time, submitted_at, notes, status)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         ''', (
             appointment_data['id'],
             appointment_data['full_name'],
@@ -111,7 +131,8 @@ def save_appointment(appointment_data):
             appointment_data['date'],
             appointment_data['time'],
             appointment_data['submitted_at'],
-            appointment_data.get('notes', '')
+            appointment_data.get('notes', ''),
+            appointment_data.get('status', 'pending')
         ))
         conn.commit()
         conn.close()
@@ -213,7 +234,7 @@ def appointment():
     if request.method == 'POST':
         # جمع بيانات النموذج
         appointment_data = {
-            'id': datetime.now().strftime("%Y%m%d%H%M%S"),
+            'id': str(uuid.uuid4()),
             'full_name': request.form.get('full_name', '').strip(),
             'phone': request.form.get('phone', '').strip(),
             'email': request.form.get('email', '').strip(),
@@ -282,12 +303,12 @@ def admin_login():
         # التحقق من بيانات الدخول
         conn = get_db_connection()
         user = conn.execute(
-            'SELECT * FROM users WHERE username = ? AND password = ?',
-            (username, password)
+            'SELECT * FROM users WHERE username = ?',
+            (username,)
         ).fetchone()
         conn.close()
-        
-        if user:
+
+        if user and check_password_hash(user['password'], password):
             session['logged_in'] = True
             session['username'] = username
             flash('✅ Connexion réussie!', 'success')
@@ -331,6 +352,56 @@ def delete_appointment(appointment_id):
         flash('❌ Rendez-vous non trouvé.', 'error')
     
     return redirect(url_for('admin_dashboard'))
+
+@app.route('/admin/update-status/<appointment_id>', methods=['POST'])
+@login_required
+def update_appointment_status(appointment_id):
+    """
+    تحديث حالة الموعد (pending / confirmed / cancelled)
+    """
+    status = request.form.get('status', 'pending')
+    if status not in ['pending', 'confirmed', 'cancelled']:
+        flash('Statut invalide.', 'error')
+        return redirect(url_for('admin_dashboard'))
+    try:
+        conn = get_db_connection()
+        conn.execute('UPDATE appointments SET status = ? WHERE id = ?', (status, appointment_id))
+        conn.commit()
+        conn.close()
+        flash('✅ Statut mis à jour avec succès.', 'success')
+    except Exception as e:
+        flash(f'❌ Erreur: {e}', 'error')
+    return redirect(url_for('admin_dashboard'))
+
+@app.route('/admin/search')
+@login_required
+def admin_search():
+    """
+    البحث في المواعيد
+    """
+    query = request.args.get('q', '').strip()
+    if not query:
+        return redirect(url_for('admin_dashboard'))
+    conn = get_db_connection()
+    appointments = conn.execute(
+        '''SELECT * FROM appointments
+           WHERE full_name LIKE ? OR phone LIKE ? OR email LIKE ? OR service LIKE ?
+           ORDER BY date DESC, time DESC''',
+        (f'%{query}%', f'%{query}%', f'%{query}%', f'%{query}%')
+    ).fetchall()
+    conn.close()
+    appointments = [dict(a) for a in appointments]
+    stats = {
+        'total': len(appointments),
+        'today': 0,
+        'this_week': 0,
+        'by_service': count_by_service(appointments)
+    }
+    return render_template('admin_dashboard.html',
+                           appointments=appointments,
+                           stats=stats,
+                           query=query,
+                           now=datetime.now())
 
 @app.route('/admin/logout')
 def admin_logout():
@@ -407,12 +478,13 @@ def test():
     return "✅ Le serveur Flask fonctionne correctement!"
 
 @app.route('/test-appointment')
+@login_required
 def test_appointment():
     """
     إنشاء موعد تجريبي (للاختبار فقط)
     """
     test_data = {
-        'id': datetime.now().strftime("%Y%m%d%H%M%S"),
+        'id': str(uuid.uuid4()),
         'full_name': 'Jean Dupont',
         'phone': '01 23 45 67 89',
         'email': 'jean@test.com',
@@ -430,14 +502,16 @@ def test_appointment():
         return "❌ Erreur lors de la création du rendez-vous de test"
 
 @app.route('/migrate')
+@login_required
 def migrate_data():
     """
     نقل البيانات من ملف JSON القديم إلى قاعدة بيانات SQLite
     (تشغيل مرة واحدة فقط)
     """
-    if os.path.exists('appointments.json'):
+    json_path = os.path.join(BASE_DIR, 'appointments.json')
+    if os.path.exists(json_path):
         try:
-            with open('appointments.json', 'r', encoding='utf-8') as f:
+            with open(json_path, 'r', encoding='utf-8') as f:
                 old_appointments = json.load(f)
             
             migrated_count = 0
@@ -466,7 +540,7 @@ def create_templates():
     """
     إنشاء صفحات HTML للأخطاء إذا لم تكن موجودة
     """
-    templates_dir = 'templates'
+    templates_dir = os.path.join(BASE_DIR, 'templates')
     os.makedirs(templates_dir, exist_ok=True)
     
     # صفحة 404
@@ -515,12 +589,11 @@ def create_templates():
 </html>
             ''')
 
+# تهيئة عند بدء التطبيق (سواء __main__ أو WSGI)
+init_db()
+create_templates()
+
 if __name__ == '__main__':
-    # تهيئة قاعدة البيانات
-    init_db()
-    
-    # إنشاء صفحات الأخطاء إذا لزم الأمر
-    create_templates()
     
     # عرض معلومات التشغيل
     print("=" * 60)
@@ -528,8 +601,8 @@ if __name__ == '__main__':
     print("=" * 60)
     print(f"🌐 Site principal: http://localhost:5000")
     print(f"🔐 Administration: http://localhost:5000/admin/login")
-    print(f"👤 Identifiants admin: {app.config['ADMIN_USERNAME']} / {app.config['ADMIN_PASSWORD']}")
+    print(f"👤 Identifiants admin: {app.config['ADMIN_USERNAME']}")
     print("=" * 60)
     
     # تشغيل التطبيق
-    app.run(debug=True, host='0.0.0.0', port=5000)
+    app.run(debug=os.environ.get('FLASK_DEBUG', 'False').lower() == 'true', host='0.0.0.0', port=5000)

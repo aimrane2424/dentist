@@ -162,6 +162,25 @@ document.addEventListener('DOMContentLoaded', function() {
         dateInput.value = tomorrowStr;
         dateInput.min = tomorrowStr; // On ne permet pas les dates passées
     }
+
+    // Générer les créneaux horaires (8h30 - 18h00, toutes les 30 min)
+    const timeSelect = document.getElementById('time');
+    if (timeSelect) {
+        const slots = [];
+        for (let h = 8; h <= 18; h++) {
+            for (let m of [0, 30]) {
+                if (h === 8 && m === 0) continue; // commence à 8h30
+                if (h === 18 && m === 30) continue; // dernier créneau à 18h00
+                slots.push(`${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}`);
+            }
+        }
+        slots.forEach(slot => {
+            const option = document.createElement('option');
+            option.value = slot;
+            option.textContent = slot;
+            timeSelect.appendChild(option);
+        });
+    }
 });
 </script>
 {% endblock %}
